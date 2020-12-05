@@ -7,7 +7,6 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = Task.find(params[:id])
   end
 
   def new
@@ -27,11 +26,9 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id])
   end
 
   def update
-    @task = Task.find(params[:id])
     
     if @task.update(task_params)
       flash[:success] = 'Task が正常に投稿されました'
@@ -43,9 +40,8 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task = Task.find(params[:id])
     
-    if@task.destroy
+    if @task.destroy
       flash[:success] = 'Task は正常に削除されました'
       redirect_back(fallback_location: root_path)
     end
