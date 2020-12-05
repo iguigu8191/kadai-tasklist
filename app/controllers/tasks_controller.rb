@@ -3,7 +3,6 @@ class TasksController < ApplicationController
   before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
-      @task = current_user.tasks.build  # form_with 用
       @tasks = current_user.tasks.order(id: :desc).page(params[:page])
   end
 
@@ -48,10 +47,7 @@ class TasksController < ApplicationController
     
     if@task.destroy
       flash[:success] = 'Task は正常に削除されました'
-      redirect_to tasks_url
-    else
-      flash.now[:danger] = 'Task が削除されませんでした'
-      render :edit
+      redirect_back(fallback_location: root_path)
     end
   
   end
@@ -63,9 +59,9 @@ class TasksController < ApplicationController
   end
   
   def correct_user
-    @user = current_user.tasks.find_by(id: params[:id])
-    unless @user
-      redirect_to login_url
+    @task = current_user.tasks.find_by(id: params[:id])
+    unless @task
+      redirect_to root_url
     end
   end
   
