@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
+  before_action :correct_user, only: [:show, :edit, :update, :destroy]
   
   def index
       @task = current_user.tasks.build  # form_with 用
@@ -59,6 +60,13 @@ class TasksController < ApplicationController
   
   def task_params
     params.require(:task).permit(:content, :status)
+  end
+  
+  def correct_user
+    @user = current_user.tasks.find_by(id: params[:id])
+    unless @user
+      redirect_to login_url
+    end
   end
   
 end
